@@ -70,60 +70,92 @@ Nous allons définir ensuite notre Diagram relation d'entités à l'aide Mermaid
 
         CustomerAddress {
             int id PK
-            string name
-            string streetNum
-            string streetName
+            string(100) name
+            string(255) line1
+            string(255) line2
+            string(50) zipCode
             string city
             string country
-            int userId FK
+            array type
+        }
+
+
+        Product {
+            int id PK
+            string(100) name
+            text description
+            float price
+            int stock
+            string(100) slug
+            datetime createdAt
+            datetime modifiedAt
+        }
+
+        Tva {
+            int id PK
+            string(100) name
+            float value
+            datetime createdAt
+            datetime modifiedAt
+        }
+
+        ProductImage {
+            int id PK
+            string(100) name
+            string(255) file
+            datetime createdAt
+            datetime modifiedAt
         }
 
         Category {
             int id PK
             string name
-        }
-
-        Product {
-            int id PK
-            string name
-            string description
-            float price
-            string photo
-            int categoryId FK
+            text description
+            string(100) slug
+            datetime createdAt
+            datetime modifiedAt
         }
 
         Review {
             int id PK
-            int rate
-            string text
-            date date
-            int userId FK
-            int productId FK
+            int review
+            text content
+            datetime createdAt
+            datetime modifiedAt
         }
 
         Order {
             int id PK
-            date date
-            float price
-            string status
-            int userId FK
+            string(255) orderNumber
+            string(100) status
+            datetime createdAt
+            datetime shippedAt
         }
 
         OrderLine {
             int id PK
             int quantity
             float price
-            int productId FK
-            int orderId FK
+            float tva
         }
 
-        User ||--o| Customer : has
+        Payment {
+            int id PK
+            string(255) type
+            float amount
+            datetime createdAt
+        }
+
+        User ||--o| Customer : is
         User ||--|{ CustomerAddress : has
-        User ||--o{ Review : has
-        User ||--o{ Order : has
-        Product }o--|| Category : has
-        Product ||--o{ Review : has
-        OrderLine ||--|| Product : has
-        OrderLine ||--|| Order : has
+        Customer ||--o| Review : has
+        Product ||--o| Review : has
+        Product }o--|| Tva : has
+        Product ||--|{ ProductImage : has
+        Product }o--|{ Category : inside
+        OrderLine }|--|| Order : inside
+        Payment }o--|| Order : isPaid
+        Customer ||--o{ Order : has
+        OrderLine }|--|| Product : has
 
  ```
