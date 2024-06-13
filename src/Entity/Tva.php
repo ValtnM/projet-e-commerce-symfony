@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\TvaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TvaRepository;
+use App\Traits\TimestampableEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: TvaRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+
 class Tva
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

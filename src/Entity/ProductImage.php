@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Traits\TimestampableEntity;
+use App\Repository\ProductImageRepository;
 
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+
 class ProductImage
 {
+
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
