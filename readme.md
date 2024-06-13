@@ -10,7 +10,6 @@ Nous allons concevoir notre Diagramme relationnel d'entité (erDiagram).
 - fournir une liste de toutes les entités
 - penser les propriétés de ces entités
 - définir les relations entre chaque entités
----
 ### Étape 1 : fournir une liste de toutes les entités
 
 - User
@@ -159,3 +158,80 @@ Nous allons définir ensuite notre Diagram relation d'entités à l'aide Mermaid
         OrderLine }|--|| Product : has
 
  ```
+
+
+ ## Installation
+
+ ### Création du projet
+
+ ```bash
+    symfony new my_project_directory --version="7.1.*" --webapp
+ ```
+
+### Création de la BDD
+- Création d'un fichier .env.local
+- Ajout de la ligne :
+ ```php
+    DATABASE_URL="mysql://root:root@127.0.0.1:3306/ecommerce?serverVersion=5.7.24&charset=utf8mb4"
+ ```
+
+ ### Création des entités
+ ```bash
+    php bin/console make:entity
+ ```
+
+ ### Création des migrations
+ Permet de créer les différentes des tables dans la BDD
+  ```bash
+    php bin/console make:migration
+    php bin/console doctrine:migrations:migrate
+ ```
+
+
+### Création d'un formulaire de connexion
+Installation du bundle security
+  ```bash
+    composer require symfony/security-bundle
+ ```
+
+ ### Création d'un formulaire d'inscription
+Création du formulaire
+```bash
+    php bin/console make:registration-form
+```
+
+Installation du bundle pour l'email de confirmation
+ ```bash
+     composer require symfonycasts/verify-email-bundle
+```
+
+Installation de mailer
+ ```bash
+    composer required symfony/mailer
+```
+
+Ajouter le mailer DSN dans .env.local
+```php
+    // Pour MailHog
+    MAILER_DSN=smtp://localhost:1025 
+```
+
+Commenter la ligne suivante pour éviter d'enregistrer les mails dans la table messenger_messages
+```php
+    Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+```
+
+Créer un formulaire pour le customer
+```bash
+    php .\bin\console make:form 
+```
+
+
+Dans le registrationFormType.php ajouter la ligne suivante pour y intégrer le customerType.php
+
+```php
+    ->add('customer', CustomerType::class, [
+        'label' => false
+    ]) 
+```
+
