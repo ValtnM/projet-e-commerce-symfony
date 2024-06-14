@@ -19,4 +19,13 @@ class FrontController extends AbstractController
             'products' => $products,
         ]);
     }
+    #[Route('/front/{slug}', name: 'app_front_product')]
+    public function product(ProductRepository $productRepository, $slug): Response
+    {
+        $product = $productRepository->findOneBy(array('slug' => $slug));
+
+        return $this->render('front/product.html.twig', [
+            'product' => $product,
+        ]);
+    }
 }
